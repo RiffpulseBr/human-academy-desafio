@@ -25,7 +25,7 @@ O RepurposeAI utiliza o motor **Gemini 2.5 Flash** para transformar um texto bas
 - **Infraestrutura:** Railway Pro (Deployment contínuo e escalável).
 
 ## 🚀 Como testar
-1. Acesse o link oficial: [COLE O SEU LINK DO RAILWAY AQUI]
+1. Acesse o link oficial: https://human-academy-desafio-production.up.railway.app/
 2. Insira um texto base na caixa da esquerda.
 3. Escolha a rede social desejada.
 4. Clique em "Copiar" e publique!
