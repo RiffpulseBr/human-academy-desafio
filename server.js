@@ -48,3 +48,29 @@ app.post('/api/adapt', async (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // Janela de 15 minutos
+  max: 20, // Limita cada IP a 20 requisições por janela
+  message: { error: "Muitas requisições. Tente novamente em 15 minutos." }
+});
+
+// Aplica o limitador apenas na rota da IA
+app.use('/api/adapt', limiter);
+
+const helmet = require('helmet');
+
+app.use(helmet({
+  contentSecurityPolicy: false, 
+}));
+
+const cors = require('cors');
+
+const corsOptions = {
+  origin: 'https://human-academy-desafio-production.up.railway.app/',
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
