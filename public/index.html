@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepurposeAI | Modo Agência</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #09090b;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-color: #8b5cf6; /* Roxo estilo IA generativa */
+            --accent-glow: rgba(139, 92, 246, 0.4);
+            --text-main: #ededed;
+            --text-muted: #a1a1aa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15), transparent 50%);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .header { text-align: center; margin-bottom: 40px; animation: fadeIn 1s ease-out; }
+        .header h1 { font-weight: 600; font-size: 2.5rem; margin: 0; background: linear-gradient(to right, #fff, #a78bfa); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            display: flex; flex-direction: column;
+        }
+
+        h2 { font-size: 1.1rem; font-weight: 500; margin-top: 0; color: #fff; display: flex; align-items: center; gap: 8px; }
+        
+        textarea {
+            width: 100%; height: 300px;
+            background: rgba(0, 0, 0, 0.2); color: var(--text-main);
+            border: 1px solid var(--border-color); border-radius: 12px;
+            padding: 15px; font-family: inherit; font-size: 0.95rem; resize: none;
+            box-sizing: border-box; transition: all 0.3s ease;
+        }
+        textarea:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 15px var(--accent-glow); }
+
+        .button-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        
+        button.action-btn {
+            flex: 1; background: rgba(255, 255, 255, 0.05); color: #fff;
+            border: 1px solid var(--border-color); padding: 12px 15px;
+            border-radius: 8px; font-weight: 500; cursor: pointer;
+            transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
+        }
+        button.action-btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent-color); transform: translateY(-2px); }
+        button.action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .output-box {
+            background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 20px; margin-bottom: 15px; position: relative;
+        }
+        .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .output-title { font-weight: 600; font-size: 0.9rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .copy-btn {
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-muted);
+            padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: var(--text-main); color: var(--bg-color); }
+
+        .output-content { white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: #d4d4d8; min-height: 60px; }
+
+        /* Animação de Carregamento estilo IA */
+        .loading-pulse { animation: pulse 1.5s infinite; color: var(--accent-color); font-style: italic; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>RepurposeAI</h1>
+        <p>Potencializado pelo seu Cluster Jarvis</p>
+    </div>
+
+    <div class="container">
+        <div class="panel">
+            <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Texto Original</h2>
+            <textarea id="sourceText" placeholder="Cole o roteiro, blog post ou anotações confusas aqui..."></textarea>
+           <div class="button-group">
+                <button class="action-btn" id="btn-instagram" onclick="adapt('instagram')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    Instagram
+                </button>
+                <button class="action-btn" id="btn-x" onclick="adapt('x')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+                    Thread do X
+                </button>
+                <button class="action-btn" id="btn-linkedin" onclick="adapt('linkedin')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    LinkedIn
+                </button>
+            </div>
+        </div>
+        
+        <div class="panel">
+            <h2><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg> Desdobramentos</h2>
+            
+            <div class="output-box">
+                <div class="output-header">
+                    <span class="output-title">Instagram</span>
+                    <button class="copy-btn" onclick="copyText('content-instagram', this)">Copiar</button>
+                </div>
+                <div class="output-content" id="content-instagram">Aguardando comando...</div>
+            </div>
+
+            <div class="output-box">
+                <div class="output-header">
+                    <span class="output-title">X (Twitter)</span>
+                    <button class="copy-btn" onclick="copyText('content-x', this)">Copiar</button>
+                </div>
+                <div class="output-content" id="content-x">Aguardando comando...</div>
+            </div>
+
+            <div class="output-box">
+                <div class="output-header">
+                    <span class="output-title">LinkedIn</span>
+                    <button class="copy-btn" onclick="copyText('content-linkedin', this)">Copiar</button>
+                </div>
+                <div class="output-content" id="content-linkedin">Aguardando comando...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
